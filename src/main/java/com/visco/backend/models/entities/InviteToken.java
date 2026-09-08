@@ -45,9 +45,6 @@ public class InviteToken {
   @Column(name = "intended_role", nullable = false)
   private String intendedRole;
 
-  @Column(name = "cost_center_id")
-  private Long costCenterId;
-
   @Column(name = "created_by_id", nullable = false)
   private UUID createdById;
 

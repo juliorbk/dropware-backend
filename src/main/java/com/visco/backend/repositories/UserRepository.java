@@ -20,11 +20,8 @@ public interface UserRepository extends JpaRepository<User, UUID> {
     @Query("SELECT u FROM User u WHERE u.email = :email")
     Optional<User> findByEmailIgnoreCase(@Param("email") String email);
 
-    @Query("SELECT u FROM User u LEFT JOIN FETCH u.costCenter WHERE u.email = :email")
-    Optional<User> findByEmailWithCostCenter(@Param("email") String email);
-
     @Query(
-        value = "SELECT u FROM User u LEFT JOIN FETCH u.costCenter",
+        value = "SELECT u FROM User u",
         countQuery = "SELECT COUNT(u) FROM User u"
     )
     Page<User> findAllWithFetch(Pageable pageable);

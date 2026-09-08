@@ -14,8 +14,6 @@ public record DispatchRequest(
 
     @NotNull(message = "El empleado que retira es obligatorio") Long employeeId,
 
-    @NotNull(message = "El centro de costos es obligatorio") Long costCenterId,
-
     String notes,
 
     UUID createdById,

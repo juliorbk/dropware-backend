@@ -3,10 +3,8 @@ package com.visco.backend.services;
 import com.visco.backend.models.dtos.UpdateUserRequest;
 import com.visco.backend.models.dtos.UserDTO;
 import com.visco.backend.models.dtos.UserReferencesResponse;
-import com.visco.backend.models.entities.CostCenter;
 import com.visco.backend.models.entities.User;
 import com.visco.backend.models.entities.UserRole;
-import com.visco.backend.repositories.CostCenterRepository;
 import com.visco.backend.repositories.UserReferenceCountRepository;
 import com.visco.backend.repositories.UserRepository;
 import com.cloudinary.Cloudinary;
@@ -32,7 +30,6 @@ import org.springframework.web.multipart.MultipartFile;
 public class AdminService {
 
     private final UserRepository userRepository;
-    private final CostCenterRepository costCenterRepository;
     private final UserReferenceCountRepository userReferenceCountRepository;
     private final Cloudinary cloudinary;
 
@@ -62,7 +59,7 @@ public class AdminService {
     }
 
     /**
-     * Updates a user's role and cost center.
+     * Updates a user's role.
      *
      * @param id         the user UUID
      * @param request    the update request
@@ -90,17 +87,6 @@ public class AdminService {
         }
 
         user.setRole(request.role());
-
-        if (request.costCenterId() != null) {
-            CostCenter costCenter = costCenterRepository
-                .findById(request.costCenterId())
-                .orElseThrow(() ->
-                    new EntityNotFoundException("Area not found: " + request.costCenterId())
-                );
-            user.setCostCenter(costCenter);
-        } else {
-            user.setCostCenter(null);
-        }
 
         return UserDTO.fromUser(userRepository.save(user));
     }

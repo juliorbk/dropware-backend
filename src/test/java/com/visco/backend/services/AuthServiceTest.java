@@ -8,7 +8,6 @@ import com.visco.backend.models.dtos.UserRegisterRequest;
 import com.visco.backend.models.entities.InviteToken;
 import com.visco.backend.models.entities.User;
 import com.visco.backend.models.entities.UserRole;
-import com.visco.backend.repositories.CostCenterRepository;
 import com.visco.backend.repositories.InviteTokenRepository;
 import com.visco.backend.repositories.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -30,7 +29,6 @@ class AuthServiceTest {
   @Autowired private InviteTokenService inviteTokenService;
   @Autowired private UserRepository userRepository;
   @Autowired private InviteTokenRepository inviteTokenRepository;
-  @Autowired private CostCenterRepository costCenterRepository;
   @Autowired private org.springframework.security.crypto.password.PasswordEncoder passwordEncoder;
   @Autowired private com.visco.backend.config.CustomUserDetailsService userDetailsService;
   @Autowired private jakarta.persistence.EntityManager entityManager;
@@ -39,7 +37,6 @@ class AuthServiceTest {
   void setUp() {
     inviteTokenRepository.deleteAll();
     userRepository.deleteAll();
-    costCenterRepository.deleteAll();
   }
 
   @Test

@@ -2,21 +2,32 @@
 <configuration>
     <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
 
-    <!-- JSON a stdout (capturado por Railway / Render logs) -->
-    <appender name="JSON" class="ch.qos.logback.core.ConsoleAppender">
-        <encoder class="net.logstash.logback.encoder.LogstashEncoder">
-            <includeContext>false</includeContext>
-            <customFields>{"app":"viscosg","env":"${SPRING_PROFILES_ACTIVE:-prod}"}</customFields>
-            <fieldNames>
-                <timestamp>timestamp</timestamp>
-                <level>level</level>
-                <logger>logger</logger>
-                <message>message</message>
-                <thread>thread</thread>
-                <mdc>mdc</mdc>
-            </fieldNames>
-        </encoder>
-    </appender>
+    <!-- Dev (profile "local"): consola humana legible, con color -->
+    <springProfile name="local">
+        <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+            <encoder>
+                <pattern>%d{HH:mm:ss.SSS} %highlight(%-5level) [%thread] %cyan(%-35.35logger{34}) - %msg%n%ex</pattern>
+            </encoder>
+        </appender>
+    </springProfile>
+
+    <!-- Prod (Railway / Render): JSON a stdout, capturado por la plataforma -->
+    <springProfile name="!local">
+        <appender name="JSON" class="ch.qos.logback.core.ConsoleAppender">
+            <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+                <includeContext>false</includeContext>
+                <customFields>{"app":"viscosg","env":"${SPRING_PROFILES_ACTIVE:-prod}"}</customFields>
+                <fieldNames>
+                    <timestamp>timestamp</timestamp>
+                    <level>level</level>
+                    <logger>logger</logger>
+                    <message>message</message>
+                    <thread>thread</thread>
+                    <mdc>mdc</mdc>
+                </fieldNames>
+            </encoder>
+        </appender>
+    </springProfile>
 
     <!-- Loki — solo se activa con el profile "loki" (requiere credenciales válidas).
          Railway captura stdout por defecto, así que Loki es opcional. -->
@@ -38,7 +49,12 @@
     </springProfile>
 
     <root level="INFO">
-        <appender-ref ref="JSON"/>
+        <springProfile name="local">
+            <appender-ref ref="CONSOLE"/>
+        </springProfile>
+        <springProfile name="!local">
+            <appender-ref ref="JSON"/>
+        </springProfile>
         <springProfile name="loki">
             <appender-ref ref="LOKI"/>
         </springProfile>

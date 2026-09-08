@@ -10,7 +10,6 @@ public record RequisitionResponse(
     String requisitionNumber,
     String description,
     String requestedBy,
-    String areaName,
     RequisitionStatus status,
     String rejectionReason,
     String approvalNotes,

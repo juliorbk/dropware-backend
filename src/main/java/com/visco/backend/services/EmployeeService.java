@@ -2,9 +2,7 @@ package com.visco.backend.services;
 
 import com.visco.backend.models.dtos.EmployeeRequestDto;
 import com.visco.backend.models.dtos.EmployeeResponseDto;
-import com.visco.backend.models.entities.CostCenter;
 import com.visco.backend.models.entities.Employee;
-import com.visco.backend.repositories.CostCenterRepository;
 import com.visco.backend.repositories.EmployeeRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class EmployeeService {
 
   private final EmployeeRepository employeeRepository;
-  private final CostCenterRepository costCenterRepository;
 
   /**
    * Retrieves a paginated list of all employees.
@@ -33,23 +30,6 @@ public class EmployeeService {
   public Page<EmployeeResponseDto> getAllEmployees(Pageable pageable) {
     return employeeRepository
       .findAllWithFetch(pageable)
-      .map(EmployeeResponseDto::fromEntity);
-  }
-
-  /**
-   * Retrieves employees filtered by cost center.
-   *
-   * @param pageable     pagination information
-   * @param costCenterId the cost center ID
-   * @return page of employee DTOs
-   */
-  @Transactional(readOnly = true)
-  public Page<EmployeeResponseDto> getEmployeesByCostCenter(
-    Pageable pageable,
-    Long costCenterId
-  ) {
-    return employeeRepository
-      .findByCostCenterIdWithFetch(costCenterId, pageable)
       .map(EmployeeResponseDto::fromEntity);
   }
 
@@ -70,7 +50,7 @@ public class EmployeeService {
   }
 
   /**
-   * Creates a new employee with optional cost center assignment.
+   * Creates a new employee.
    *
    * @param request the employee creation request
    * @return the created employee DTO
@@ -80,17 +60,6 @@ public class EmployeeService {
     Employee.EmployeeBuilder builder = Employee.builder()
       .fullName(request.fullName())
       .documentNumber(request.documentNumber());
-
-    if (request.costCenterId() != null) {
-      CostCenter cc = costCenterRepository
-        .findById(request.costCenterId())
-        .orElseThrow(() ->
-          new EntityNotFoundException(
-            "Cost center not found: " + request.costCenterId()
-          )
-        );
-      builder.costCenter(cc);
-    }
 
     if (request.isActive() != null) {
       builder.active(request.isActive());
@@ -102,7 +71,7 @@ public class EmployeeService {
   }
 
   /**
-   * Updates an existing employee's details and cost center.
+   * Updates an existing employee's details.
    *
    * @param document the employee document number
    * @param request  the update request
@@ -121,19 +90,6 @@ public class EmployeeService {
 
     employee.setFullName(request.fullName());
     employee.setDocumentNumber(request.documentNumber());
-
-    if (request.costCenterId() != null) {
-      CostCenter cc = costCenterRepository
-        .findById(request.costCenterId())
-        .orElseThrow(() ->
-          new EntityNotFoundException(
-            "Cost center not found: " + request.costCenterId()
-          )
-        );
-      employee.setCostCenter(cc);
-    } else {
-      employee.setCostCenter(null);
-    }
 
     if (request.isActive() != null) {
       employee.setActive(request.isActive());

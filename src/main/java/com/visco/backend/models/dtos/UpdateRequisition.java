@@ -10,7 +10,6 @@ import java.util.UUID;
 // Request payload for updating an existing requisition.
 public record UpdateRequisition(
   @NotBlank String description,
-  @NotNull Long costCenterId,
   @NotNull UUID requestedById,
   @Valid @NotEmpty List<RequisitionItemRequest> items
 ) {}

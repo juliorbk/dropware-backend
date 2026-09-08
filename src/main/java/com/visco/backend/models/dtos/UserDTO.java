@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-// Response DTO with user profile and cost center information.
+// Response DTO with user profile information.
 public class UserDTO {
 
     private UUID id;
@@ -20,8 +20,6 @@ public class UserDTO {
     private String email;
     private UserRole role;
 
-    private Long costCenterId;
-    private String costCenterName;
     private String profilePictureUrl;
 
     public static UserDTO fromUser(User user) {
@@ -33,12 +31,6 @@ public class UserDTO {
             .name(user.getName())
             .email(user.getEmail())
             .role(user.getRole())
-            .costCenterId(user.getCostCenter() != null ? user.getCostCenter().getId() : null)
-            .costCenterName(
-                user.getCostCenter() != null
-                    ? user.getCostCenter().getFullDescription()
-                    : "Without area"
-            )
             .profilePictureUrl(user.getProfilePictureUrl())
             .build();
     }

@@ -168,7 +168,6 @@ public class SecurityConfig {
           .hasRole("ADMIN")
           // Cualquier usuario autenticado (dropdowns de solo lectura)
           .requestMatchers(
-            "/api/cost-centers/**",
             "/api/management/**",
             "/api/general-management/**"
           )

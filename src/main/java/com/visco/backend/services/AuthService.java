@@ -4,11 +4,9 @@ import com.visco.backend.models.dtos.AuthResponse;
 import com.visco.backend.models.dtos.LoginRequest;
 import com.visco.backend.models.dtos.UserDTO;
 import com.visco.backend.models.dtos.UserRegisterRequest;
-import com.visco.backend.models.entities.CostCenter;
 import com.visco.backend.models.entities.InviteToken;
 import com.visco.backend.models.entities.User;
 import com.visco.backend.models.entities.UserRole;
-import com.visco.backend.repositories.CostCenterRepository;
 import com.visco.backend.repositories.UserRepository;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
@@ -35,7 +33,6 @@ import org.springframework.web.multipart.MultipartFile;
 public class AuthService {
 
     private final UserRepository userRepository;
-    private final CostCenterRepository costCenterRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final EmailService emailService;
@@ -68,19 +65,11 @@ public class AuthService {
             throw new IllegalStateException("Invite token has an invalid role configured");
         }
 
-        CostCenter costCenter = null;
-        if (invite.getCostCenterId() != null) {
-            costCenter = costCenterRepository
-                .findById(invite.getCostCenterId())
-                .orElseThrow(() -> new IllegalArgumentException("Area no encontrada"));
-        }
-
         User newUser = User.builder()
             .name(request.getName())
             .email(normalizedEmail)
             .password(passwordEncoder.encode(request.getPassword()))
             .role(intendedRole)
-            .costCenter(costCenter)
             .active(true)
             .build();
 
@@ -174,7 +163,7 @@ public class AuthService {
      */
     public UserDTO getCurrentUser(String email) {
         User user = userRepository
-            .findByEmailWithCostCenter(email)
+            .findByEmailIgnoreCase(email)
             .orElseThrow(() -> new UsernameNotFoundException("User not found"));
         return UserDTO.fromUser(user);
     }

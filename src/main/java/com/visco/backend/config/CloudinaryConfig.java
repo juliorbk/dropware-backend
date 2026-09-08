@@ -8,11 +8,14 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class CloudinaryConfig {
 
-  @Value("${cloudinary.url}")
+  private static final String PLACEHOLDER_URL = "cloudinary://fake:fake@fake";
+
+  @Value("${cloudinary.url:}")
   private String cloudinaryUrl;
 
   @Bean
   public Cloudinary cloudinary() {
-    return new Cloudinary(cloudinaryUrl);
+    String url = (cloudinaryUrl == null || cloudinaryUrl.isBlank()) ? PLACEHOLDER_URL : cloudinaryUrl;
+    return new Cloudinary(url);
   }
 }

@@ -19,13 +19,13 @@ public interface RequisitionRepository extends JpaRepository<Requisition, Long> 
     Page<Requisition> findByRequestedById(java.util.UUID requestedById, Pageable pageable);
 
     @Query(
-        value = "SELECT DISTINCT r FROM Requisition r JOIN FETCH r.requestedBy JOIN FETCH r.costCenter LEFT JOIN FETCH r.approvedBy LEFT JOIN FETCH r.items i LEFT JOIN FETCH i.product",
+        value = "SELECT DISTINCT r FROM Requisition r JOIN FETCH r.requestedBy LEFT JOIN FETCH r.approvedBy LEFT JOIN FETCH r.items i LEFT JOIN FETCH i.product",
         countQuery = "SELECT COUNT(r) FROM Requisition r"
     )
     Page<Requisition> findAllWithFetch(Pageable pageable);
  
     @Query(
-        value = "SELECT DISTINCT r FROM Requisition r JOIN FETCH r.requestedBy JOIN FETCH r.costCenter LEFT JOIN FETCH r.approvedBy LEFT JOIN FETCH r.items i LEFT JOIN FETCH i.product WHERE r.status = :status",
+        value = "SELECT DISTINCT r FROM Requisition r JOIN FETCH r.requestedBy LEFT JOIN FETCH r.approvedBy LEFT JOIN FETCH r.items i LEFT JOIN FETCH i.product WHERE r.status = :status",
         countQuery = "SELECT COUNT(r) FROM Requisition r WHERE r.status = :status"
     )
     Page<Requisition> findByStatusWithFetch(@Param("status") RequisitionStatus status, Pageable pageable);
@@ -33,7 +33,6 @@ public interface RequisitionRepository extends JpaRepository<Requisition, Long> 
     @Query(
         value = "SELECT DISTINCT r FROM Requisition r " +
           "JOIN FETCH r.requestedBy " +
-          "JOIN FETCH r.costCenter " +
           "LEFT JOIN FETCH r.approvedBy " +
           "LEFT JOIN FETCH r.items i " +
           "LEFT JOIN FETCH i.product " +
@@ -50,7 +49,6 @@ public interface RequisitionRepository extends JpaRepository<Requisition, Long> 
     @Query(
         value = "SELECT DISTINCT r FROM Requisition r " +
           "JOIN FETCH r.requestedBy " +
-          "JOIN FETCH r.costCenter " +
           "LEFT JOIN FETCH r.approvedBy " +
           "LEFT JOIN FETCH r.items i " +
           "LEFT JOIN FETCH i.product " +
@@ -71,7 +69,7 @@ public interface RequisitionRepository extends JpaRepository<Requisition, Long> 
     );
 
     @Query(
-        value = "SELECT r FROM Requisition r JOIN FETCH r.requestedBy JOIN FETCH r.costCenter LEFT JOIN FETCH r.approvedBy WHERE r.requestedBy.id = :requestedById",
+        value = "SELECT r FROM Requisition r JOIN FETCH r.requestedBy LEFT JOIN FETCH r.approvedBy WHERE r.requestedBy.id = :requestedById",
         countQuery = "SELECT COUNT(r) FROM Requisition r WHERE r.requestedBy.id = :requestedById"
     )
     Page<Requisition> findByRequestedByIdWithFetch(@Param("requestedById") java.util.UUID requestedById, Pageable pageable);
@@ -79,7 +77,7 @@ public interface RequisitionRepository extends JpaRepository<Requisition, Long> 
     @Query("""
             SELECT DISTINCT r FROM Requisition r
             JOIN FETCH r.requestedBy
-            JOIN FETCH r.costCenter
+            LEFT JOIN FETCH r.approvedBy
             LEFT JOIN FETCH r.approvedBy
             LEFT JOIN FETCH r.items i
             LEFT JOIN FETCH i.product

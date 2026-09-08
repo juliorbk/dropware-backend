@@ -15,7 +15,6 @@ import com.visco.backend.models.dtos.TransferStockRequest;
 import com.visco.backend.models.dtos.UpdateReceiptItemLocationRequest;
 import com.visco.backend.models.dtos.WarehouseDTO;
 import com.visco.backend.models.dtos.WarehouseStockSummary;
-import com.visco.backend.models.entities.CostCenter;
 import com.visco.backend.models.entities.DispatchNote;
 import com.visco.backend.models.entities.DispatchNoteItem;
 import com.visco.backend.models.entities.Employee;
@@ -31,7 +30,6 @@ import com.visco.backend.models.entities.PurchaseOrderStatus;
 import com.visco.backend.models.entities.StockLevel;
 import com.visco.backend.models.entities.User;
 import com.visco.backend.models.entities.Warehouse;
-import com.visco.backend.repositories.CostCenterRepository;
 import com.visco.backend.repositories.DispatchNoteRepository;
 import com.visco.backend.repositories.EmployeeRepository;
 import com.visco.backend.repositories.GoodReceiptRepository;
@@ -81,7 +79,6 @@ public class WarehouseService {
   private final InventoryMovementRepository inventoryMovementRepository;
   private final DispatchNoteRepository dispatchNoteRepository;
   private final EmployeeRepository employeeRepository;
-  private final CostCenterRepository costCenterRepository;
 
   @Value("${app.reports.max-records-per-export:2000}")
   private int exportMaxRecords;
@@ -1044,14 +1041,6 @@ public class WarehouseService {
       );
     }
 
-    CostCenter costCenter = costCenterRepository
-      .findById(request.costCenterId())
-      .orElseThrow(() ->
-        new EntityNotFoundException(
-          "Cost center not found: " + request.costCenterId()
-        )
-      );
-
     User createdBy = userRepository
       .findByEmail(currentUserEmail)
       .orElseThrow(() ->
@@ -1069,7 +1058,6 @@ public class WarehouseService {
       .dispatchNumber(dispatchNumber)
       .warehouse(warehouse)
       .withdrawnBy(employee)
-      .costCenter(costCenter)
       .notes(request.notes())
       .createdAt(LocalDateTime.now())
       .createdBy(createdBy)

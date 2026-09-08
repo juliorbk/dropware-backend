@@ -63,7 +63,6 @@ public class InviteTokenService {
       .token(generateToken())
       .email(request.getEmail().toLowerCase().trim())
       .intendedRole(request.getRole())
-      .costCenterId(request.getCostCenterId())
       .createdById(createdById)
       .expiresAt(expiresAt)
       .revoked(false)

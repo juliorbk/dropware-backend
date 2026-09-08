@@ -33,7 +33,6 @@ import lombok.ToString;
   name = "requisitions",
   indexes = {
     @Index(name = "idx_req_requested_by", columnList = "requested_by_id"),
-    @Index(name = "idx_req_cost_center", columnList = "cost_center_id"),
     @Index(name = "idx_req_approved_by", columnList = "approved_by_id"),
     @Index(name = "idx_req_status", columnList = "status"),
     @Index(name = "idx_req_created_at", columnList = "created_at"),
@@ -43,7 +42,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-// Represents a purchase requisition requesting items for a cost center.
+// Represents a purchase requisition requesting items.
 public class Requisition {
 
   @Id
@@ -61,12 +60,6 @@ public class Requisition {
   @EqualsAndHashCode.Exclude
   @ToString.Exclude
   private User requestedBy;
-
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "cost_center_id", nullable = false) // FK to CostCenter
-  @EqualsAndHashCode.Exclude
-  @ToString.Exclude
-  private CostCenter costCenter;
 
   @Enumerated(EnumType.STRING)
   @Column(nullable = false)

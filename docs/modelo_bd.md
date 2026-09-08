@@ -8,12 +8,13 @@ Modelo relacional del sistema **sin** el flujo de compras: se excluyen requisici
 
 ```mermaid
 erDiagram
-    app_user ||--o| cost_centers : "pertenece a"
+    app_user }o--o| cost_centers : "pertenece a"
     app_user ||--o{ invite_tokens : "crea"
     invite_tokens }o--o| app_user : "usado por"
     app_user ||--o{ password_reset_tokens : "solicita"
     app_user ||--o{ warehouses : "responsable"
     app_user ||--o{ dispatch_notes : "crea"
+    app_user ||--o{ inventory_movements : "registra"
 
     general_management ||--o{ management : "agrupa"
     management ||--o{ cost_centers : "contiene"
@@ -24,14 +25,12 @@ erDiagram
     warehouses ||--o{ locations : "contiene"
     warehouses ||--o{ dispatch_notes : "origen de despacho"
     warehouses ||--o{ stock_levels : "almacena stock"
-    warehouses ||--o{ inventory_movements : "registra movimientos"
+    warehouses ||--o{ inventory_movements : "origen/destino"
     warehouses ||--o{ reports : "filtra reportes"
-
-    locations ||--o{ stock_levels : "ubica stock"
-    locations ||--o{ inventory_movements : "origen/destino"
 
     categories ||--o{ categories : "jerarquia padre-hijo"
     categories ||--o{ products : "clasifica"
+    categories ||--o{ reports : "filtra reportes"
     suppliers ||--o{ products : "provee"
     products ||--o{ stock_levels : "tiene stock"
     products ||--o{ inventory_movements : "registra movimientos"
@@ -39,10 +38,9 @@ erDiagram
 
     suppliers ||--o{ legal_representatives : "tiene representantes"
     suppliers ||--o{ supplier_phones : "tiene telefonos"
-    suppliers ||--o{ supplier_representatives : "tiene reps"
-    legal_representatives ||--o{ supplier_representatives : "vincula"
     supplier_categories ||--o{ suppliers : "clasifica"
 
+    employees ||--o{ dispatch_notes : "retira"
     dispatch_notes ||--o{ dispatch_note_items : "detalla"
 ```
 

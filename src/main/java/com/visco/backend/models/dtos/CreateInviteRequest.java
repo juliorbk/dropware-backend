@@ -17,7 +17,5 @@ public class CreateInviteRequest {
   @NotNull(message = "El rol es obligatorio")
   private String role;
 
-  private Long costCenterId;
-
   private LocalDateTime expiresAt;
 }

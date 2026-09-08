@@ -17,13 +17,11 @@ import com.visco.backend.models.dtos.RequisitionItemRequest;
 import com.visco.backend.models.dtos.RequisitionItemResponse;
 import com.visco.backend.models.dtos.RequisitionResponse;
 import com.visco.backend.models.dtos.UpdateRequisition;
-import com.visco.backend.models.entities.CostCenter;
 import com.visco.backend.models.entities.Product;
 import com.visco.backend.models.entities.Requisition;
 import com.visco.backend.models.entities.RequisitionItem;
 import com.visco.backend.models.entities.RequisitionStatus;
 import com.visco.backend.models.entities.User;
-import com.visco.backend.repositories.CostCenterRepository;
 import com.visco.backend.repositories.ProductRepository;
 import com.visco.backend.repositories.RequisitionRepository;
 import com.visco.backend.repositories.StockLevelRepository;
@@ -43,7 +41,6 @@ public class RequisitionService {
 
   private final RequisitionRepository requisitionRepository;
   private final UserRepository userRepository;
-  private final CostCenterRepository costCenterRepository;
   private final ProductRepository productRepository;
   private final StockLevelRepository stockLevelRepository;
 
@@ -65,17 +62,10 @@ public class RequisitionService {
         )
       );
 
-    CostCenter costCenter = costCenterRepository
-      .findById(request.costCenterId())
-      .orElseThrow(() ->
-        new EntityNotFoundException("Area not found: " + request.costCenterId())
-      );
-
     Requisition requisition = Requisition.builder()
       .requisitionNumber(request.requisitionNumber())
       .description(request.description())
       .requestedBy(requestedBy)
-      .costCenter(costCenter)
       .status(RequisitionStatus.PENDING)
       .createdAt(LocalDateTime.now())
       .build();
@@ -316,7 +306,7 @@ public class RequisitionService {
   }
 
   /**
-   * Updates a draft requisition's description, cost center, and items.
+   * Updates a draft requisition's description and items.
    *
    * @param id            the requisition ID
    * @param requestedById the requester's UUID
@@ -340,17 +330,6 @@ public class RequisitionService {
     }
 
     req.setDescription(request.description());
-
-    if (!req.getCostCenter().getId().equals(request.costCenterId())) {
-      CostCenter costCenter = costCenterRepository
-        .findById(request.costCenterId())
-        .orElseThrow(() ->
-          new EntityNotFoundException(
-            "Area not found: " + request.costCenterId()
-          )
-        );
-      req.setCostCenter(costCenter);
-    }
 
     // Bulk DELETE en BD en lugar de clear() que carga toda la colección en memoria
     requisitionRepository.deleteItemsByRequisitionId(id);
@@ -413,7 +392,6 @@ public class RequisitionService {
       req.getRequisitionNumber(),
       req.getDescription(),
       req.getRequestedBy().getName(),
-      req.getCostCenter().getFullDescription(),
       req.getStatus(),
       req.getRejectionReason(),
       req.getApprovalNotes(),

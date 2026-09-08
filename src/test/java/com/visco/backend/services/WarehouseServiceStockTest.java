@@ -30,7 +30,6 @@ import com.visco.backend.models.entities.PaymentMethod;
 import com.visco.backend.models.entities.Uom;
 import com.visco.backend.models.entities.User;
 import com.visco.backend.models.entities.Warehouse;
-import com.visco.backend.repositories.CostCenterRepository;
 import com.visco.backend.repositories.DispatchNoteRepository;
 import com.visco.backend.repositories.EmployeeRepository;
 import com.visco.backend.repositories.GoodReceiptRepository;
@@ -87,7 +86,6 @@ class WarehouseServiceStockTest {
   @Mock private InventoryMovementRepository inventoryMovementRepository;
   @Mock private DispatchNoteRepository dispatchNoteRepository;
   @Mock private EmployeeRepository employeeRepository;
-  @Mock private CostCenterRepository costCenterRepository;
   @Mock private LocationRepository locationRepository;
 
   @InjectMocks private WarehouseService warehouseService;

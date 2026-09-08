@@ -4,13 +4,10 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Index;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
@@ -32,7 +29,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 @Table(
   name = "app_user",
   indexes = {
-    @Index(name = "idx_user_cost_center", columnList = "cost_center_id"),
     @Index(name = "idx_user_email", columnList = "email", unique = true),
   }
 )
@@ -90,10 +86,6 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private UserRole role;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "cost_center_id")
-    private CostCenter costCenter;
 
     @Column(name = "is_active")
     private Boolean active;

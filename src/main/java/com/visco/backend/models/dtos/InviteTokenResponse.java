@@ -14,7 +14,6 @@ public class InviteTokenResponse {
   String token;
   String email;
   String intendedRole;
-  Long costCenterId;
   UUID createdById;
   LocalDateTime createdAt;
   LocalDateTime expiresAt;
@@ -28,7 +27,6 @@ public class InviteTokenResponse {
       .token(entity.getToken())
       .email(entity.getEmail())
       .intendedRole(entity.getIntendedRole())
-      .costCenterId(entity.getCostCenterId())
       .createdById(entity.getCreatedById())
       .createdAt(entity.getCreatedAt())
       .expiresAt(entity.getExpiresAt())
