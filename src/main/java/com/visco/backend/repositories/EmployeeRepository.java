@@ -17,8 +17,10 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
   )
   Page<Employee> findAllWithFetch(Pageable pageable);
 
-  // Finds an employee by their unique document number.
-  Optional<Employee> findByDocumentNumber(String documentNumber);
+  @Query(
+    "SELECT e FROM Employee e LEFT JOIN FETCH e.costCenter WHERE e.documentNumber = :documentNumber"
+  )
+  Optional<Employee> findByDocumentNumber(@Param("documentNumber") String documentNumber);
 
   // Finds employees belonging to a specific cost center with eager loading.
   @Query(

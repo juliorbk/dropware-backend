@@ -25,6 +25,7 @@ import com.visco.backend.repositories.WarehouseRepository;
 import jakarta.persistence.EntityNotFoundException;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -161,8 +162,8 @@ public class ProcurementService {
             order.getItems().add(item);
 
             warehouseService.addPendingStockByWarehouse(
-                product.getId(),
-                request.destinationWarehouseId(),
+                product,
+                destinationWarehouse,
                 itemReq.quantity()
             );
         }
@@ -287,6 +288,8 @@ public class ProcurementService {
         if (orderWarehouse != null) {
             Map<Long, BigDecimal> receivedQtys = getTotalReceivedByOrder(orderId);
 
+            List<PurchaseOrderItem> itemsWithPending = new ArrayList<>();
+            Map<Long, BigDecimal> pendingQtyByProduct = new HashMap<>();
             for (PurchaseOrderItem item : order.getItems()) {
                 BigDecimal orderedQty = item.getQuantity();
                 BigDecimal receivedQty = receivedQtys.getOrDefault(
@@ -294,41 +297,45 @@ public class ProcurementService {
                     BigDecimal.ZERO
                 );
                 BigDecimal pendingQty = orderedQty.subtract(receivedQty);
-
                 if (pendingQty.compareTo(BigDecimal.ZERO) > 0) {
-                    BigDecimal currentPending = stockLevelRepository.getPendingStock(
-                        item.getProduct().getId(),
-                        orderWarehouse.getId()
-                    );
-                    if (currentPending != null && currentPending.compareTo(pendingQty) < 0) {
+                    itemsWithPending.add(item);
+                    pendingQtyByProduct.put(item.getProduct().getId(), pendingQty);
+                }
+            }
+
+            if (!itemsWithPending.isEmpty()) {
+                List<Long> productIds = itemsWithPending.stream()
+                    .map(i -> i.getProduct().getId())
+                    .toList();
+
+                Map<Long, BigDecimal> pendingStockMap = stockLevelRepository
+                    .getPendingStockByProductIdsAndWarehouse(productIds, orderWarehouse.getId())
+                    .stream()
+                    .collect(Collectors.toMap(
+                        StockLevelRepository.PendingStockByProductProjection::getProductId,
+                        StockLevelRepository.PendingStockByProductProjection::getPendingStock
+                    ));
+
+                for (PurchaseOrderItem item : itemsWithPending) {
+                    BigDecimal pendingQty = pendingQtyByProduct.get(item.getProduct().getId());
+                    BigDecimal available = pendingStockMap.getOrDefault(item.getProduct().getId(), BigDecimal.ZERO);
+                    if (available.compareTo(pendingQty) < 0) {
                         throw new IllegalStateException(
                             "Insufficient pending stock for product " +
                                 item.getProduct().getId() +
                                 ". Available: " +
-                                currentPending +
+                                available +
                                 ", Required: " +
                                 pendingQty
                         );
                     }
                 }
-            }
 
-            // Una cancelación solo revierte lo NO recibido. La mercancía ya
-            // recibida sigue físicamente en el almacén, por lo que NO se
-            // debe tocar current_stock (eso se hace vía Return/Disposal, no
-            // aquí). Solo se resta el pending restante.
-            for (PurchaseOrderItem item : order.getItems()) {
-                BigDecimal orderedQty = item.getQuantity();
-                BigDecimal receivedQty = receivedQtys.getOrDefault(
-                    item.getProduct().getId(),
-                    BigDecimal.ZERO
-                );
-                BigDecimal pendingQty = orderedQty.subtract(receivedQty);
-                if (pendingQty.compareTo(BigDecimal.ZERO) > 0) {
+                for (PurchaseOrderItem item : itemsWithPending) {
                     warehouseService.substractPendingStock(
                         item.getProduct().getId(),
                         orderWarehouse.getId(),
-                        pendingQty
+                        pendingQtyByProduct.get(item.getProduct().getId())
                     );
                 }
             }

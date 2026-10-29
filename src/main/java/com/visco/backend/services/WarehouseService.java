@@ -514,31 +514,20 @@ public class WarehouseService {
     );
   }
 
-  /**
-   * Adds pending stock for a product in a specific warehouse.
-   *
-   * @param productId   the product ID
-   * @param warehouseId the warehouse ID
-   * @param quantity    the quantity to add
-   */
   public void addPendingStockByWarehouse(
     Long productId,
     Long warehouseId,
     BigDecimal quantity
   ) {
-    warehouseRepository
-      .findById(warehouseId)
-      .orElseThrow(() ->
-        new EntityNotFoundException("Warehouse not found: " + warehouseId)
-      );
-
-    productRepository
-      .findById(productId)
-      .orElseThrow(() ->
-        new EntityNotFoundException("Product not found: " + productId)
-      );
-
     stockLevelRepository.addPendingStockAtomic(productId, warehouseId, quantity);
+  }
+
+  public void addPendingStockByWarehouse(
+    Product product,
+    Warehouse warehouse,
+    BigDecimal quantity
+  ) {
+    stockLevelRepository.addPendingStockAtomic(product.getId(), warehouse.getId(), quantity);
   }
 
   /**
@@ -1101,18 +1090,23 @@ public class WarehouseService {
         warehouse.getId(),
         itemReq.quantity()
       );
-
-      InventoryMovement movement = InventoryMovement.builder()
-        .product(product)
-        .fromWarehouse(warehouse)
-        .quantity(itemReq.quantity())
-        .type(MovementType.OUTPUT)
-        .reason("Dispatch: " + dispatchNumber)
-        .createdAt(LocalDateTime.now())
-        .createdBy(createdBy)
-        .build();
-      inventoryMovementRepository.save(movement);
     }
+
+    List<InventoryMovement> movements = request.items().stream()
+      .map(itemReq -> {
+        Product product = productMap.get(itemReq.productId());
+        return InventoryMovement.builder()
+          .product(product)
+          .fromWarehouse(warehouse)
+          .quantity(itemReq.quantity())
+          .type(MovementType.OUTPUT)
+          .reason("Dispatch: " + dispatchNumber)
+          .createdAt(LocalDateTime.now())
+          .createdBy(createdBy)
+          .build();
+      })
+      .toList();
+    inventoryMovementRepository.saveAll(movements);
 
     dispatchNoteRepository.save(note);
     return DispatchResponse.fromEntity(note);

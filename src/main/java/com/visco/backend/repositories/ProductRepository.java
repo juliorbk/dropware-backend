@@ -61,6 +61,8 @@ public interface ProductRepository
 
   @Query(
     "SELECT p FROM Product p " +
+      "JOIN FETCH p.supplier " +
+      "JOIN FETCH p.category " +
       "JOIN StockLevel s ON s.product.id = p.id " +
       "WHERE s.currentStock <= p.reorderPoint AND p.active = true " +
       "ORDER BY s.currentStock ASC"

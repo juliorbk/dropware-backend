@@ -4,7 +4,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -129,10 +131,13 @@ class ProcurementServiceStockTest {
     order.setStatus(PurchaseOrderStatus.PARTIALLY_DELIVERED);
     GoodReceiptRepository.ReceivedQuantityProjection projection =
       receipt(product.getId(), BigDecimal.valueOf(4));
+    StockLevelRepository.PendingStockByProductProjection pendingProj =
+      pendingStockProjection(product.getId(), BigDecimal.valueOf(6));
     when(purchaseOrderRepository.findByIdDetailed(order.getId()))
       .thenReturn(java.util.Optional.of(order));
-    when(stockLevelRepository.getPendingStock(product.getId(), destWarehouse.getId()))
-      .thenReturn(BigDecimal.valueOf(6));
+    when(stockLevelRepository.getPendingStockByProductIdsAndWarehouse(
+      List.of(product.getId()), destWarehouse.getId()))
+      .thenReturn(List.of(pendingProj));
     when(goodReceiptRepository.getTotalReceivedByOrder(order.getId()))
       .thenReturn(List.of(projection));
     when(purchaseOrderRepository.save(any())).thenAnswer(inv -> inv.getArgument(0));
@@ -152,10 +157,13 @@ class ProcurementServiceStockTest {
   @Test
   void cancelOrderById_revertsFullPendingWhenNothingReceived() {
     order.setStatus(PurchaseOrderStatus.APPROVED);
+    StockLevelRepository.PendingStockByProductProjection pendingProj =
+      pendingStockProjection(product.getId(), BigDecimal.valueOf(10));
     when(purchaseOrderRepository.findByIdDetailed(order.getId()))
       .thenReturn(java.util.Optional.of(order));
-    when(stockLevelRepository.getPendingStock(product.getId(), destWarehouse.getId()))
-      .thenReturn(BigDecimal.valueOf(10));
+    when(stockLevelRepository.getPendingStockByProductIdsAndWarehouse(
+      List.of(product.getId()), destWarehouse.getId()))
+      .thenReturn(List.of(pendingProj));
     when(goodReceiptRepository.getTotalReceivedByOrder(order.getId()))
       .thenReturn(List.of());
     when(purchaseOrderRepository.save(any())).thenAnswer(inv -> inv.getArgument(0));
@@ -194,11 +202,14 @@ class ProcurementServiceStockTest {
   @Test
   void cancelOrderById_throwsWhenInsufficientPendingStock() {
     order.setStatus(PurchaseOrderStatus.IN_TRANSIT);
+    StockLevelRepository.PendingStockByProductProjection pendingProj =
+      pendingStockProjection(product.getId(), BigDecimal.valueOf(5));
     when(purchaseOrderRepository.findByIdDetailed(order.getId()))
       .thenReturn(java.util.Optional.of(order));
     // PO says 10 pending, but the ledger only has 5 → cannot revert 10.
-    when(stockLevelRepository.getPendingStock(product.getId(), destWarehouse.getId()))
-      .thenReturn(BigDecimal.valueOf(5));
+    when(stockLevelRepository.getPendingStockByProductIdsAndWarehouse(
+      List.of(product.getId()), destWarehouse.getId()))
+      .thenReturn(List.of(pendingProj));
     when(goodReceiptRepository.getTotalReceivedByOrder(order.getId()))
       .thenReturn(List.of());
 
@@ -212,10 +223,13 @@ class ProcurementServiceStockTest {
   @Test
   void cancelOrderById_marksOrderCancelled() {
     order.setStatus(PurchaseOrderStatus.APPROVED);
+    StockLevelRepository.PendingStockByProductProjection pendingProj =
+      pendingStockProjection(product.getId(), BigDecimal.valueOf(10));
     when(purchaseOrderRepository.findByIdDetailed(order.getId()))
       .thenReturn(java.util.Optional.of(order));
-    when(stockLevelRepository.getPendingStock(product.getId(), destWarehouse.getId()))
-      .thenReturn(BigDecimal.valueOf(10));
+    when(stockLevelRepository.getPendingStockByProductIdsAndWarehouse(
+      List.of(product.getId()), destWarehouse.getId()))
+      .thenReturn(List.of(pendingProj));
     when(goodReceiptRepository.getTotalReceivedByOrder(order.getId()))
       .thenReturn(List.of());
     when(purchaseOrderRepository.save(any())).thenAnswer(inv -> inv.getArgument(0));
@@ -282,12 +296,22 @@ class ProcurementServiceStockTest {
     procurementService.createPurchaseOrder(request);
 
     verify(warehouseService, atLeastOnce()).addPendingStockByWarehouse(
-      product.getId(), destWarehouse.getId(), BigDecimal.valueOf(7));
+      product, destWarehouse, BigDecimal.valueOf(7));
   }
 
   // ─────────────────────────────────────────────────────────────
   // helpers
   // ─────────────────────────────────────────────────────────────
+
+  private StockLevelRepository.PendingStockByProductProjection pendingStockProjection(
+    Long productId, BigDecimal pendingStock
+  ) {
+    StockLevelRepository.PendingStockByProductProjection p =
+      mock(StockLevelRepository.PendingStockByProductProjection.class);
+    when(p.getProductId()).thenReturn(productId);
+    when(p.getPendingStock()).thenReturn(pendingStock);
+    return p;
+  }
 
   private GoodReceiptRepository.ReceivedQuantityProjection receipt(
     Long productId,

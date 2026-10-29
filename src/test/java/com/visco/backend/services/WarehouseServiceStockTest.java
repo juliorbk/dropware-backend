@@ -507,10 +507,7 @@ class WarehouseServiceStockTest {
   // ─────────────────────────────────────────────────────────────
 
   @Test
-  void addPendingStockByWarehouse_validatesWarehouseAndProduct() {
-    when(warehouseRepository.findById(destWarehouse.getId()))
-      .thenReturn(Optional.of(destWarehouse));
-    when(productRepository.findById(product.getId())).thenReturn(Optional.of(product));
+  void addPendingStockByWarehouse_delegatesToAtomicOperation() {
     when(stockLevelRepository.addPendingStockAtomic(
       product.getId(), destWarehouse.getId(), BigDecimal.valueOf(3)))
       .thenReturn(1);
@@ -526,14 +523,5 @@ class WarehouseServiceStockTest {
       destWarehouse.getId(),
       BigDecimal.valueOf(3)
     );
-  }
-
-  @Test
-  void addPendingStockByWarehouse_throwsForMissingWarehouse() {
-    when(warehouseRepository.findById(destWarehouse.getId())).thenReturn(Optional.empty());
-    assertThrows(EntityNotFoundException.class,
-      () -> warehouseService.addPendingStockByWarehouse(
-        product.getId(), destWarehouse.getId(), BigDecimal.valueOf(3)));
-    verify(stockLevelRepository, never()).addPendingStockAtomic(anyLong(), anyLong(), any());
   }
 }

@@ -243,6 +243,22 @@ public interface StockLevelRepository extends JpaRepository<StockLevel, Long> {
     @Param("newStock") BigDecimal newStock
   );
 
+  @Query(
+    "SELECT s.product.id AS productId, COALESCE(SUM(s.pendingStock), 0) AS pendingStock " +
+    "FROM StockLevel s " +
+    "WHERE s.product.id IN :productIds AND s.warehouse.id = :warehouseId " +
+    "GROUP BY s.product.id"
+  )
+  List<PendingStockByProductProjection> getPendingStockByProductIdsAndWarehouse(
+    @Param("productIds") List<Long> productIds,
+    @Param("warehouseId") Long warehouseId
+  );
+
+  interface PendingStockByProductProjection {
+    Long getProductId();
+    BigDecimal getPendingStock();
+  }
+
   interface StockByProductProjection {
     Long getProductId();
     BigDecimal getTotalStock();
