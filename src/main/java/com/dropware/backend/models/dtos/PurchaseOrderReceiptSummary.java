@@ -1,0 +1,33 @@
+package com.dropware.backend.models.dtos;
+
+import com.dropware.backend.models.entities.PurchaseOrderStatus;
+import java.math.BigDecimal;
+import java.util.List;
+import lombok.Builder;
+import lombok.Data;
+
+@Data
+@Builder
+// DTO summarizing receipt status and quantities for a purchase order.
+public class PurchaseOrderReceiptSummary {
+
+  private Long orderId;
+  private String orderNumber;
+  private PurchaseOrderStatus orderStatus;
+  private int totalReceipts;
+  private List<ItemSummary> items;
+
+  @Data
+  @Builder
+  public static class ItemSummary {
+
+    private Long productId;
+    private String productName;
+    private String productSku;
+    private String uom;
+    private BigDecimal orderedQuantity;
+    private BigDecimal receivedQuantity;
+    private BigDecimal pendingQuantity;
+    private boolean fullyReceived;
+  }
+}

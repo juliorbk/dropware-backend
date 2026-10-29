@@ -9,10 +9,10 @@
 		<relativePath/>
 		<!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.visco</groupId>
-	<artifactId>system</artifactId>
+	<groupId>com.dropware</groupId>
+	<artifactId>dropware-backend</artifactId>
 	<version>1.2.0</version>
-	<name>system</name>
+	<name>dropware-backend</name>
 	<description/>
 	<url/>
 	<licenses>

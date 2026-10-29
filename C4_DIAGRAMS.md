@@ -1,17 +1,17 @@
-# Visco Orinoco (visco-sg) — C4 Model Architecture Diagrams
+# Dropware (dropware-sg) — C4 Model Architecture Diagrams
 
 ## C1 — System Context
 
 ```mermaid
 C4Context
-    title System Context — Visco Orinoco / visco-sg
+    title System Context — Dropware / dropware-sg
 
     Person(usuario, "Usuario Interno", "Empleados con roles: SUPERADMIN, ADMIN, MANAGER, PROCUREMENT, WAREHOUSEMAN, USER")
     Person(proveedor_ext, "Proveedor", "Proveedor externo de bienes/servicios (interactua fuera del sistema)")
 
-    System_Ext(frontend, "Frontend Next.js", "viscoorinocosia.vercel.app — SPA que consume la API REST via JWT en cookie HttpOnly")
+    System_Ext(frontend, "Frontend Next.js", "localhost:3000 — SPA que consume la API REST via JWT en cookie HttpOnly")
 
-    System_Boundary(visco, "Visco Orinoco Platform") {
+    System_Boundary(dropware, "Dropware Platform") {
         System(api, "API Spring Boot", "Backend monolitico REST — gestion de inventario, compras, facturacion, almacenes, reportes")
         SystemDb(db, "PostgreSQL 16", "Base de datos principal — entidades, usuarios, transacciones")
     }
@@ -35,7 +35,7 @@ C4Context
 
 ```mermaid
 C4Container
-    title Container — Visco Orinoco
+    title Container — Dropware
 
     Person(usuario, "Usuario Interno", "Roles: SUPERADMIN > ADMIN > MANAGER > PROCUREMENT/WAREHOUSEMAN > USER")
 
@@ -76,7 +76,7 @@ C4Component
 
         Component(security, "Security Layer", "Spring Security + Bucket4j", "JWT Auth Filter, Rate Limit Filter (14 rutas), CORS, Role Hierarchy (6 roles)")
         Component(jwt, "JwtService", "jjwt 0.12.6", "Genera/valida tokens HMAC-SHA256, expiracion configurable (default 24h)")
-        Component(cookie, "CookieService", "", "HttpOnly + Secure + SameSite=None cookie visco_auth_token")
+        Component(cookie, "CookieService", "", "HttpOnly + Secure + SameSite=None cookie dropware_auth_token")
 
         Component(auth_ctrl, "AuthController", "REST", "/api/auth/* — register, login, logout, forgot/reset-password, me")
         Component(auth_svc, "AuthService", "", "Registro (con invite token + Cloudinary upload), login, refresh")

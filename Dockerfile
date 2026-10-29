@@ -17,8 +17,8 @@ FROM eclipse-temurin:21-jre-alpine
 WORKDIR /app
 
 # Usuario no-root por seguridad
-RUN addgroup -S visco && adduser -S visco -G visco
-USER visco
+RUN addgroup -S dropware && adduser -S dropware -G dropware
+USER dropware
 
 # Copiar el JAR generado
 COPY --from=builder /app/target/*.jar app.jar

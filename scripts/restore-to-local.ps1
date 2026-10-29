@@ -1,5 +1,5 @@
 $ErrorActionPreference = "Stop"
-$backupFile = Join-Path $PSScriptRoot "..\visco_backup.sql" | Resolve-Path -Relative
+$backupFile = Join-Path $PSScriptRoot "..\dropware_backup.sql" | Resolve-Path -Relative
 
 if (-not (Test-Path $backupFile)) {
     Write-Host "❌ No se encuentra $backupFile. Ejecutá primero dump-from-render.ps1" -ForegroundColor Red
@@ -8,7 +8,7 @@ if (-not (Test-Path $backupFile)) {
 
 Write-Host "⏳ Restaurando $backupFile en Docker local..." -ForegroundColor Cyan
 
-Get-Content $backupFile | docker exec -i visco_db psql -U visco_user -d visco_db
+Get-Content $backupFile | docker exec -i dropware_db psql -U dropware_user -d dropware_db
 
 if ($LASTEXITCODE -eq 0) {
     Write-Host "✅ Restauración completada" -ForegroundColor Green

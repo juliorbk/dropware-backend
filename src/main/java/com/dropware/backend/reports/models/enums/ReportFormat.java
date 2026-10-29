@@ -1,0 +1,18 @@
+package com.dropware.backend.reports.models.enums;
+
+// Supported report output formats with their MIME types.
+public enum ReportFormat {
+    PDF("application/pdf"),
+    EXCEL("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"),
+    JSON("application/json");
+
+    private final String mimeType;
+
+    ReportFormat(String mimeType) {
+        this.mimeType = mimeType;
+    }
+
+    public String getMimeType() {
+        return mimeType;
+    }
+}

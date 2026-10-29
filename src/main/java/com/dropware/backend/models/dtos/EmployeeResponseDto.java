@@ -1,0 +1,24 @@
+package com.dropware.backend.models.dtos;
+
+import com.dropware.backend.models.entities.Employee;
+
+// Response DTO with employee details and associated cost center.
+public record EmployeeResponseDto(
+  Long id,
+  String fullName,
+  String documentNumber,
+  Long costCenterId,
+  String costCenterDescription,
+  Boolean isActive
+) {
+  public static EmployeeResponseDto fromEntity(Employee emp) {
+    return new EmployeeResponseDto(
+      emp.getId(),
+      emp.getFullName(),
+      emp.getDocumentNumber(),
+      emp.getCostCenter() != null ? emp.getCostCenter().getId() : null,
+      emp.getCostCenter() != null ? emp.getCostCenter().getFullDescription() : null,
+      emp.isActive()
+    );
+  }
+}

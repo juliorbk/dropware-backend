@@ -1,4 +1,4 @@
-# Visco Orinoco — Backend API
+# Dropware — Backend API
 
 Sistema de gestión empresarial para control de inventario, órdenes de compra, proveedores y facturación. Desarrollado con Spring Boot 3 y desplegado en Render.
 
@@ -45,7 +45,7 @@ Sistema de gestión empresarial para control de inventario, órdenes de compra, 
 ```
 ┌─────────────────────────────────────────┐
 │           Frontend (Next.js)            │
-│        viscoorinocosia.vercel.app       │
+│             localhost:3000              │
 └────────────────┬────────────────────────┘
                  │ HTTPS + HttpOnly Cookie (JWT)
 ┌────────────────▼────────────────────────┐
@@ -116,16 +116,16 @@ Catálogo de centros de costo para clasificación de requisiciones y usuarios.
 ### 1. Clonar el repositorio
 
 ```bash
-git clone https://github.com/tu-usuario/viscosg-backend.git
-cd viscosg-backend
+git clone https://github.com/tu-usuario/dropware-backend.git
+cd dropware-backend
 ```
 
 ### 2. Crear la base de datos
 
 ```sql
-CREATE DATABASE visco_db;
-CREATE USER visco_admin WITH PASSWORD 'tu_password';
-GRANT ALL PRIVILEGES ON DATABASE visco_db TO visco_admin;
+CREATE DATABASE dropware_db;
+CREATE USER dropware_admin WITH PASSWORD 'tu_password';
+GRANT ALL PRIVILEGES ON DATABASE dropware_db TO dropware_admin;
 ```
 
 ### 3. Configurar variables de entorno
@@ -133,8 +133,8 @@ GRANT ALL PRIVILEGES ON DATABASE visco_db TO visco_admin;
 Crea el archivo `src/main/resources/application-local.properties`:
 
 ```properties
-spring.datasource.url=jdbc:postgresql://localhost:5432/visco_db
-spring.datasource.username=visco_admin
+spring.datasource.url=jdbc:postgresql://localhost:5432/dropware_db
+spring.datasource.username=dropware_admin
 spring.datasource.password=tu_password
 
 app.jwt.secret=tu_secreto_base64_de_al_menos_32_caracteres
@@ -156,8 +156,8 @@ Variables requeridas en producción (Render):
 
 | Variable | Descripción | Ejemplo |
 |----------|-------------|---------|
-| `DB_URL` | URL de conexión PostgreSQL | `jdbc:postgresql://host:5432/visco_db` |
-| `DB_USERNAME` | Usuario de la base de datos | `visco_admin` |
+| `DB_URL` | URL de conexión PostgreSQL | `jdbc:postgresql://host:5432/dropware_db` |
+| `DB_USERNAME` | Usuario de la base de datos | `dropware_admin` |
 | `DB_PASSWORD` | Contraseña de la base de datos | `***` |
 | `JWT_SECRET` | Secreto para firmar JWT (Base64, min 32 chars) | `***` |
 | `JWT_EXPIRATION_MS` | Expiración del token en ms | `86400000` |
@@ -165,7 +165,7 @@ Variables requeridas en producción (Render):
 | `MAIL_PORT` | Puerto SMTP | `587` |
 | `MAIL_USERNAME` | Correo remitente | `sistema@empresa.com` |
 | `MAIL_PASSWORD` | App password del correo | `***` |
-| `CORS_ALLOWED_ORIGINS` | Orígenes permitidos (sin espacios) | `https://viscoorinocosia.vercel.app` |
+| `CORS_ALLOWED_ORIGINS` | Orígenes permitidos (sin espacios) | `http://localhost:3000` |
 | `JPA_DDL_AUTO` | Estrategia DDL de Hibernate | `validate` |
 | `JWT_COOKIE_SECURE` | Cookie segura (true en producción) | `true` |
 | `REPORT_RECIPIENTS` | Emails para reporte semanal (separados por coma) | `admin@empresa.com` |
@@ -314,7 +314,7 @@ POST /api/admin/reports/send
 ```
 src/
 ├── main/
-│   ├── java/com/visco/backend/
+│   ├── java/com/dropware/backend/
 │   │   ├── config/          # SecurityConfig, JwtAuthFilter, RateLimitFilter, OpenAPI
 │   │   ├── controllers/     # REST controllers
 │   │   ├── exception/       # GlobalExceptionHandler
@@ -328,7 +328,7 @@ src/
 │       ├── application.properties        # Config base (usa variables de entorno)
 │       └── application-local.properties  # Config local (no subir a Git)
 └── test/
-    └── java/com/visco/backend/           # Unit tests
+    └── java/com/dropware/backend/           # Unit tests
 ```
 
 ---
@@ -339,7 +339,7 @@ El script `backup.sh` genera backups automáticos comprimidos de PostgreSQL con 
 
 ```bash
 # Ejecutar manualmente
-./src/main/java/com/visco/backend/scripts/backup.sh
+./src/main/java/com/dropware/backend/scripts/backup.sh
 
 # Variables del script
 DB_HOST, DB_PORT, DB_NAME, DB_USER, DB_PASSWORD
@@ -351,4 +351,4 @@ RETENTION_DAYS=7
 
 ## Licencia
 
-Proyecto privado — Visco Orinoco © 2025. Todos los derechos reservados.
+Proyecto privado — Dropware © 2025. Todos los derechos reservados.

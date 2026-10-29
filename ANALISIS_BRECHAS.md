@@ -1,4 +1,4 @@
-# ANÁLISIS DE BRECHAS - VISCO ORINOCO ERP
+# ANÁLISIS DE BRECHAS - DROPWARE ERP
 
 > **Fecha**: 19/05/2026
 > **Alcance**: Backend completo (Spring Boot 4.0.6, Java 21, PostgreSQL)
@@ -219,7 +219,7 @@
 - **Solución**: Generar diagrama ER (usando JPA Buddy o similar) y mantenerlo en `docs/`.
 
 ### 7.3 backup.sh vacío
-- **Problema**: Dos ubicaciones (`src/main/java/com/visco/backend/scripts/backup.sh` y `scripts/backup.sh`), ambas vacías o directorios sin contenido.
+- **Problema**: Dos ubicaciones (`src/main/java/com/dropware/backend/scripts/backup.sh` y `scripts/backup.sh`), ambas vacías o directorios sin contenido.
 - **Solución**: Implementar script funcional de backup PostgreSQL con `pg_dump`.
 
 ### 7.4 README.md no verificado

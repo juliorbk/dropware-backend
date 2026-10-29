@@ -1,0 +1,45 @@
+package com.dropware.backend.models.dtos;
+
+import com.dropware.backend.models.entities.User;
+import com.dropware.backend.models.entities.UserRole;
+import java.util.UUID;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+// Response DTO with user profile and cost center information.
+public class UserDTO {
+
+    private UUID id;
+    private String name;
+    private String email;
+    private UserRole role;
+
+    private Long costCenterId;
+    private String costCenterName;
+    private String profilePictureUrl;
+
+    public static UserDTO fromUser(User user) {
+        if (user == null) {
+            return null;
+        }
+        return UserDTO.builder()
+            .id(user.getId())
+            .name(user.getName())
+            .email(user.getEmail())
+            .role(user.getRole())
+            .costCenterId(user.getCostCenter() != null ? user.getCostCenter().getId() : null)
+            .costCenterName(
+                user.getCostCenter() != null
+                    ? user.getCostCenter().getFullDescription()
+                    : "Without area"
+            )
+            .profilePictureUrl(user.getProfilePictureUrl())
+            .build();
+    }
+}

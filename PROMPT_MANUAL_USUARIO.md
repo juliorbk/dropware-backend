@@ -1,12 +1,12 @@
 # Prompt para Generar Manual de Usuario con Gamma AI
 
-Copia todo el contenido de abajo y pégalo en Gamma AI para generar el manual de usuario del sistema **OriFlow by Visco Orinoco**.
+Copia todo el contenido de abajo y pégalo en Gamma AI para generar el manual de usuario del sistema **Dropware**.
 
 ---
 
 ## Instrucciones para Gamma AI
 
-Genera un **manual de usuario profesional** para el sistema **OriFlow by Visco Orinoco**, una plataforma empresarial de gestión de almacenes y compras. El manual debe estar en **español**, ser visualmente atractivo, e incluir las siguientes especificaciones:
+Genera un **manual de usuario profesional** para el sistema **Dropware**, una plataforma empresarial de gestión de almacenes y compras. El manual debe estar en **español**, ser visualmente atractivo, e incluir las siguientes especificaciones:
 
 ### Estilo y Formato
 - Tono profesional pero amigable
@@ -21,14 +21,14 @@ Genera un **manual de usuario profesional** para el sistema **OriFlow by Visco O
 ---
 
 ## 1. PORTADA
-- Título: "Manual de Usuario — OriFlow by Visco Orinoco"
+- Título: "Manual de Usuario — Dropware"
 - Subtítulo: "Sistema de Gestión de Almacenes y Compras"
 - Versión actual y fecha
 
 ---
 
 ## 2. INTRODUCCIÓN
-### 2.1 ¿Qué es OriFlow?
+### 2.1 ¿Qué es Dropware?
 Plataforma empresarial para la gestión integral de almacenes, compras y proveedores. Cubre el ciclo completo desde la requisición de materiales hasta la recepción y despacho de mercancía, incluyendo órdenes de compra, facturación, reportes y administración de usuarios.
 
 ### 2.2 Módulos del Sistema
@@ -75,7 +75,7 @@ Explicar los 5 niveles de acceso en orden jerárquico:
 
 ## 4. NAVEGACIÓN GENERAL
 ### 4.1 Barra Lateral
-- Logo de OriFlow (acceso directo al Dashboard)
+- Logo de Dropware (acceso directo al Dashboard)
 - Menú de navegación con 10 secciones filtradas por rol
 - Atajo "Nueva Orden de Compra" (visible para roles Compras+)
 

@@ -1,5 +1,5 @@
 $ErrorActionPreference = "Stop"
-$backupFile = Join-Path $PSScriptRoot "..\visco_backup.sql" | Resolve-Path -Relative
+$backupFile = Join-Path $PSScriptRoot "..\dropware_backup.sql" | Resolve-Path -Relative
 
 Write-Host "⚠️  Dump desde Render (Supabase)..." -ForegroundColor Cyan
 
