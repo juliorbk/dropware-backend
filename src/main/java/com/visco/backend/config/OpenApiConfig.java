@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * Configures the OpenAPI 3.0 specification document for the Visco SG API.
+ * Configures the OpenAPI 3.0 specification document for the OriFlow API.
  * Includes API metadata (title, version, contact, license) and a bearer-token
  * security scheme for JWT authentication in Swagger UI.
  */
@@ -30,10 +30,10 @@ public class OpenApiConfig {
         return new OpenAPI()
             .info(
                 new Info()
-                    .title("Visco SG API")
+                    .title("OriFlow API")
                     .version("1.0.0")
-                    .description("API para el sistema de gestión de inventario y compras de Visco")
-                    .contact(new Contact().name("Visco Team").email("support@visco.com"))
+                    .description("API para el sistema de gestión de inventario y compras de OriFlow")
+                    .contact(new Contact().name("OriFlow Team"))
                     .license(
                         new License()
                             .name("Apache 2.0")

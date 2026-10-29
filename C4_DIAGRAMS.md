@@ -1,17 +1,17 @@
-# Visco Orinoco (visco-sg) — C4 Model Architecture Diagrams
+# OriFlow (oriflow) — C4 Model Architecture Diagrams
 
 ## C1 — System Context
 
 ```mermaid
 C4Context
-    title System Context — Visco Orinoco / visco-sg
+    title System Context — OriFlow / oriflow
 
     Person(usuario, "Usuario Interno", "Empleados con roles: SUPERADMIN, ADMIN, MANAGER, PROCUREMENT, WAREHOUSEMAN, USER")
     Person(proveedor_ext, "Proveedor", "Proveedor externo de bienes/servicios (interactua fuera del sistema)")
 
     System_Ext(frontend, "Frontend Next.js", "viscoorinocosia.vercel.app — SPA que consume la API REST via JWT en cookie HttpOnly")
 
-    System_Boundary(visco, "Visco Orinoco Platform") {
+    System_Boundary(oriflow, "OriFlow Platform") {
         System(api, "API Spring Boot", "Backend monolitico REST — gestion de inventario, compras, facturacion, almacenes, reportes")
         SystemDb(db, "PostgreSQL 16", "Base de datos principal — entidades, usuarios, transacciones")
     }
@@ -35,7 +35,7 @@ C4Context
 
 ```mermaid
 C4Container
-    title Container — Visco Orinoco
+    title Container — OriFlow
 
     Person(usuario, "Usuario Interno", "Roles: SUPERADMIN > ADMIN > MANAGER > PROCUREMENT/WAREHOUSEMAN > USER")
 

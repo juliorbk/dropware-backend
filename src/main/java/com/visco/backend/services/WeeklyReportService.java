@@ -92,7 +92,7 @@ public class WeeklyReportService {
         .format(DATE_FMT);
 
       String subject = String.format(
-        "📊 Reporte Semanal Visco Orinoco — %s (Semana %s a %s)",
+        "📊 Reporte Semanal OriFlow — %s (Semana %s a %s)",
         now.format(DATE_FMT),
         weekStart,
         weekEnd
@@ -496,7 +496,7 @@ public class WeeklyReportService {
     footerCell.setCellValue(
       "© " +
         LocalDateTime.now().getYear() +
-        " Visco Orinoco — Sistema de Gestión Empresarial"
+        " OriFlow — Sistema de Gestión Empresarial"
     );
     footerCell.setCellStyle(footerStyle);
     sheet.addMergedRegion(

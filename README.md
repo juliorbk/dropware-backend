@@ -1,4 +1,4 @@
-# Visco Orinoco — Backend API
+# OriFlow — Backend API
 
 Sistema de gestión empresarial para control de inventario, órdenes de compra, proveedores y facturación. Desarrollado con Spring Boot 3 y desplegado en Render.
 
@@ -116,8 +116,8 @@ Catálogo de centros de costo para clasificación de requisiciones y usuarios.
 ### 1. Clonar el repositorio
 
 ```bash
-git clone https://github.com/tu-usuario/viscosg-backend.git
-cd viscosg-backend
+git clone https://github.com/tu-usuario/oriflow-backend.git
+cd oriflow-backend
 ```
 
 ### 2. Crear la base de datos
@@ -351,4 +351,4 @@ RETENTION_DAYS=7
 
 ## Licencia
 
-Proyecto privado — Visco Orinoco © 2025. Todos los derechos reservados.
+Proyecto privado — OriFlow © 2025. Todos los derechos reservados.

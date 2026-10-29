@@ -36,7 +36,7 @@ prometheus.relabel "alloy_check" {
   }
 }
 
-// ── Spring Boot (Visco SG en Render) ──────────────────────────────────────────
+// ── Spring Boot (OriFlow en Render) ──────────────────────────────────────────
 discovery.relabel "spring_boot" {
   targets = [{
     __address__ = "visco-sg.onrender.com:443",

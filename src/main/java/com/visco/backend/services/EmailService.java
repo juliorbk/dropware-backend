@@ -13,8 +13,8 @@ import org.springframework.stereotype.Service;
  * {@code emailExecutor} thread pool so HTTP requests never block on
  * outbound SMTP.
  *
- * <p>The sender is read from {@code app.mail.from} (e.g. {@code "Visco
- * Orinoco <noreply@viscorinoco.com>"}). The transport is configured via
+ * <p>The sender is read from {@code app.mail.from} (e.g. {@code "OriFlow
+ * <noreply@viscorinoco.com>"}). The transport is configured via
  * standard {@code spring.mail.*} properties (host, port, username,
  * password, ssl / starttls). For Render we default to port 465 with SSL
  * because port 25 is blocked and port 587 is often restricted.
@@ -48,7 +48,7 @@ public class EmailService {
    */
   @Async
   public void sendWelcomeEmail(String toEmail, String userName) {
-    String subject = "Tu acceso a Visco Orinoco está listo";
+    String subject = "Tu acceso a OriFlow está listo";
     String html = buildWelcomeHtml(userName);
     send(toEmail, subject, html);
   }
@@ -62,7 +62,7 @@ public class EmailService {
    */
   @Async
   public void sendPasswordResetEmail(String toEmail, String userName, String token) {
-    String subject = "Restablece tu contraseña — Visco Orinoco";
+    String subject = "Restablece tu contraseña — OriFlow";
     String resetUrl = passwordResetBaseUrl +
       "/reset-password?token=" + java.net.URLEncoder.encode(token, StandardCharsets.UTF_8);
     String html = buildPasswordResetHtml(userName, resetUrl);
@@ -84,7 +84,7 @@ public class EmailService {
     String token,
     String intendedRole
   ) {
-    String subject = "Has sido invitado a Visco Orinoco";
+    String subject = "Has sido invitado a OriFlow";
     String registerUrl = inviteBaseUrl +
       "/register?token=" + java.net.URLEncoder.encode(token, StandardCharsets.UTF_8);
     String html = buildInviteHtml(
@@ -149,7 +149,7 @@ public class EmailService {
                                       Hola, <span style="color:#7B1A1A;">%s</span> 👋
                                   </h1>
                                   <p style="margin:0 0 28px 0;font-size:15px;color:#6B7280;line-height:1.7;">
-                                      Tu cuenta en <strong style="color:#374151;">Visco Orinoco</strong> ha sido creada exitosamente.
+                                      Tu cuenta en <strong style="color:#374151;">OriFlow</strong> ha sido creada exitosamente.
                                       Ya puedes acceder al sistema para gestionar órdenes de compra, controlar el inventario
                                       y supervisar el rendimiento de tus proveedores.
                                   </p>
@@ -172,11 +172,11 @@ public class EmailService {
                           <tr>
                               <td style="padding:24px 44px;text-align:center;">
                                   <p style="margin:0 0 6px 0;font-size:12px;font-weight:600;color:#374151;">
-                                      Visco Orinoco — Enterprise Tier
+                                      OriFlow — Enterprise Tier
                                   </p>
                                   <p style="margin:0;font-size:11px;color:#9CA3AF;">
                                       Si no solicitaste esta cuenta, ignora este correo o contacta a soporte.<br/>
-                                      © %d Visco Orinoco. Todos los derechos reservados.
+                                      © %d OriFlow. Todos los derechos reservados.
                                   </p>
                               </td>
                           </tr>
@@ -220,7 +220,7 @@ public class EmailService {
                                   </h1>
                                   <p style="margin:0 0 24px 0;font-size:15px;color:#6B7280;line-height:1.7;">
                                       Recibimos una solicitud para restablecer la contraseña de tu cuenta en
-                                      <strong style="color:#374151;">Visco Orinoco</strong>.
+                                      <strong style="color:#374151;">OriFlow</strong>.
                                       Haz clic en el siguiente botón para crear una nueva contraseña.
                                   </p>
                                   <table cellpadding="0" cellspacing="0" style="margin-bottom:24px;">
@@ -248,7 +248,7 @@ public class EmailService {
                           <tr>
                               <td style="padding:24px 44px;text-align:center;">
                                   <p style="margin:0;font-size:11px;color:#9CA3AF;">
-                                      © %d Visco Orinoco. Todos los derechos reservados.
+                                      © %d OriFlow. Todos los derechos reservados.
                                   </p>
                               </td>
                           </tr>
@@ -293,7 +293,7 @@ public class EmailService {
                                   </h1>
                                   <p style="margin:0 0 8px 0;font-size:15px;color:#6B7280;line-height:1.7;">
                                       Te confirmamos que la contraseña de tu cuenta en
-                                      <strong style="color:#374151;">Visco Orinoco</strong> fue actualizada exitosamente.
+                                      <strong style="color:#374151;">OriFlow</strong> fue actualizada exitosamente.
                                   </p>
                                   <p style="margin:0;font-size:13px;color:#9CA3AF;line-height:1.6;">
                                       Si no realizaste este cambio, contacta a soporte de inmediato.
@@ -308,7 +308,7 @@ public class EmailService {
                           <tr>
                               <td style="padding:24px 44px;text-align:center;">
                                   <p style="margin:0;font-size:11px;color:#9CA3AF;">
-                                      © %d Visco Orinoco. Todos los derechos reservados.
+                                      © %d OriFlow. Todos los derechos reservados.
                                   </p>
                               </td>
                           </tr>
@@ -344,7 +344,7 @@ public class EmailService {
                           <tr>
                               <td style="background:linear-gradient(135deg,#5C1212 0%%,#7B1A1A 50%%,#A0302A 100%%);padding:36px 44px;">
                                   <p style="margin:0 0 4px 0;font-family:Georgia,'Times New Roman',serif;font-style:italic;font-size:28px;font-weight:400;color:#ffffff;line-height:1.25;">
-                                      Estás invitado a<br/>Visco Orinoco.
+                                      Estás invitado a<br/>OriFlow.
                                   </p>
                                   <p style="margin:0;font-size:13px;color:rgba(255,255,255,0.55);line-height:1.6;">
                                       Únete a la plataforma de gestión empresarial.
@@ -360,7 +360,7 @@ public class EmailService {
                                       Hola, <span style="color:#7B1A1A;">%s</span> 👋
                                   </h1>
                                   <p style="margin:0 0 16px 0;font-size:15px;color:#6B7280;line-height:1.7;">
-                                      Has sido invitado a formar parte de <strong style="color:#374151;">Visco Orinoco</strong>.
+                                      Has sido invitado a formar parte de <strong style="color:#374151;">OriFlow</strong>.
                                       Completa tu registro para acceder a la plataforma y comenzar a gestionar
                                       órdenes de compra, inventario y proveedores.
                                   </p>
@@ -388,10 +388,10 @@ public class EmailService {
                           <tr>
                               <td style="padding:24px 44px;text-align:center;">
                                   <p style="margin:0 0 6px 0;font-size:12px;font-weight:600;color:#374151;">
-                                      Visco Orinoco — Enterprise Tier
+                                      OriFlow — Enterprise Tier
                                   </p>
                                   <p style="margin:0;font-size:11px;color:#9CA3AF;">
-                                      © %d Visco Orinoco. Todos los derechos reservados.
+                                      © %d OriFlow. Todos los derechos reservados.
                                   </p>
                               </td>
                           </tr>

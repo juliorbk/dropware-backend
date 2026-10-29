@@ -1,12 +1,12 @@
 # Prompt para Generar Manual de Usuario con Gamma AI
 
-Copia todo el contenido de abajo y pégalo en Gamma AI para generar el manual de usuario del sistema **OriFlow by Visco Orinoco**.
+Copia todo el contenido de abajo y pégalo en Gamma AI para generar el manual de usuario del sistema **OriFlow**.
 
 ---
 
 ## Instrucciones para Gamma AI
 
-Genera un **manual de usuario profesional** para el sistema **OriFlow by Visco Orinoco**, una plataforma empresarial de gestión de almacenes y compras. El manual debe estar en **español**, ser visualmente atractivo, e incluir las siguientes especificaciones:
+Genera un **manual de usuario profesional** para el sistema **OriFlow**, una plataforma empresarial de gestión de almacenes y compras. El manual debe estar en **español**, ser visualmente atractivo, e incluir las siguientes especificaciones:
 
 ### Estilo y Formato
 - Tono profesional pero amigable
@@ -21,7 +21,7 @@ Genera un **manual de usuario profesional** para el sistema **OriFlow by Visco O
 ---
 
 ## 1. PORTADA
-- Título: "Manual de Usuario — OriFlow by Visco Orinoco"
+- Título: "Manual de Usuario — OriFlow"
 - Subtítulo: "Sistema de Gestión de Almacenes y Compras"
 - Versión actual y fecha
 

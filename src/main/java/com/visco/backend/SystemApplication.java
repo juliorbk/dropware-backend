@@ -14,7 +14,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 /**
- * Main entry point for the Visco SG backend application. Configures core
+ * Main entry point for the OriFlow backend application. Configures core
  * beans: caching, scheduling, async execution, Spring Data web support with
  * DTO serialization mode, and a dedicated {@link TaskExecutor} for email
  * delivery.

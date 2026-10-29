@@ -1,5 +1,5 @@
 #!/bin/bash
-# backup.sh — Backup automático de PostgreSQL para Visco Orinoco
+# backup.sh — Backup automático de PostgreSQL para OriFlow
 # Uso: ./backup.sh
 # Se ejecuta desde el cron del contenedor de backup (ver docker-compose.yml)
 
