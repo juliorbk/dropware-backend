@@ -40,8 +40,12 @@ public class CookieService {
     cookie.setHttpOnly(true);
     cookie.setSecure(cookieSecure);
     cookie.setPath("/");
-    cookie.setAttribute("SameSite", "None");
+    // SameSite=None exige Secure; sin Secure el navegador descarta la cookie.
+    // En local (HTTP) usamos Lax, que sigue funcionando entre localhost:3000
+    // y localhost:8080 porque comparten sitio.
+    cookie.setAttribute("SameSite", cookieSecure ? "None" : "Lax");
     long maxAgeSeconds = Math.max(1, jwtExpirationMs / 1000);
+    cookie.setMaxAge((int) Math.min(maxAgeSeconds, Integer.MAX_VALUE));
     return cookie;
   }
 
@@ -56,7 +60,7 @@ public class CookieService {
     cookie.setSecure(cookieSecure);
     cookie.setPath("/");
     cookie.setMaxAge(0);
-    cookie.setAttribute("SameSite", "None");
+    cookie.setAttribute("SameSite", cookieSecure ? "None" : "Lax");
 
     return cookie;
   }

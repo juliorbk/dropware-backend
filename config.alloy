@@ -78,14 +78,3 @@ prometheus.remote_write "metrics_service" {
     }
   }
 }
-
-loki.write "grafana_cloud_loki" {
-  endpoint {
-    url = "https://logs-prod-021.grafana.net/loki/api/v1/push"
-
-    basic_auth {
-      username = "1666639"
-      password = sys.env("GCLOUD_RW_API_KEY")
-    }
-  }
-}
